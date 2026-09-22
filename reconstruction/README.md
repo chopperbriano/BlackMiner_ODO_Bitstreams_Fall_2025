@@ -51,7 +51,7 @@ $env:VIVADO_HOME = 'C:\Xilinx\Vivado\2018.3'
 .\scripts\build.ps1 -Mode smoke
 ```
 
-This produces `build/smoke/f2_smoke.bit`. The smoke top only exercises the F2 pin constraints, a counter, LEDs, and simple RI/RO, CI/CO, BI/BO loopbacks. It contains no mining logic.
+This produces `build/smoke/f2_smoke.bit`. The smoke top exercises the F2 pin constraints, oscillator path, counter, and LEDs. Transport/unknown board pins are deliberately tri-stated until their electrical role is positively mapped. It contains no mining logic.
 
 ### Part/speed grade
 
