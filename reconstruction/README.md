@@ -80,6 +80,12 @@ The script will:
 5. Synthesize/place/route the design for the XC7VX415T FFG1157.
 6. Write `build/epoch-1788480000/f2_odo_harness_1788480000.bit` and utilization/timing reports.
 
+To prebuild both the current and next 10-day epochs, use:
+
+```powershell
+.\scripts\build_current_next.ps1 -Throughput 4
+```
+
 `Throughput=4` is deliberately conservative for the first fit attempt. The original F2 implementation's exact unrolling/throughput has not yet been recovered.
 
 ## Clock constraint
