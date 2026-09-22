@@ -23,14 +23,16 @@ foreach required_file [list $keccak $miner $generated] {
     }
 }
 
-set defs [list "THROUGHPUT=$throughput" "ODOKEY=$seed"]
 read_verilog $keccak
 read_verilog $generated
-read_verilog -define $defs $miner
+read_verilog $miner
 read_verilog [file join $root "rtl" "f2_odo_harness.v"]
 read_xdc [file join $root "constraints" "415t.xdc"]
 
-synth_design -top f2_odo_harness -part $part
+# Vivado 2018.3 applies Verilog macro definitions at synthesis time.
+synth_design -top f2_odo_harness -part $part \
+    -verilog_define "THROUGHPUT=$throughput" \
+    -verilog_define "ODOKEY=$seed"
 
 if {[info exists ::env(F2_OSC_MHZ)] && $::env(F2_OSC_MHZ) ne ""} {
     set mhz [expr {double($::env(F2_OSC_MHZ))}]
