@@ -1,0 +1,10 @@
+build/
+generated/
+third_party/
+tools-bin/
+.Xil/
+*.jou
+*.log
+*.str
+*.dcp
+*.rpt
