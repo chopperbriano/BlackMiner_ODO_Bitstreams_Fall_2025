@@ -5,12 +5,12 @@
 module f2_odo_harness(
     input  wire       osc_clk,
     input  wire       RI,
-    output wire       RO,
+    inout  wire       RO,
     input  wire       CI,
-    output wire       CO,
+    inout  wire       CO,
     input  wire       BI,
-    output wire       BO,
-    output wire       FX1_FPGA1_2_P,
+    inout  wire       BO,
+    inout  wire       FX1_FPGA1_2_P,
     output wire [1:0] Xil_LED,
     input  wire [2:0] ADDR
 );
@@ -30,12 +30,15 @@ module f2_odo_harness(
         .nonce  (nonce)
     );
 
-    // Preserve known board-side digital paths while exposing core activity.
-    assign RO = RI;
-    assign CO = CI;
-    assign BO = BI;
+    // Do not drive transport/unknown board pins until their protocol and
+    // direction are confirmed from hardware/firmware.
+    assign RO = 1'bz;
+    assign CO = 1'bz;
+    assign BO = 1'bz;
+    assign FX1_FPGA1_2_P = 1'bz;
+
+    // Expose activity only on the known LED outputs.
     assign Xil_LED[0] = nonce[22] ^ ADDR[0];
     assign Xil_LED[1] = nonce[23] ^ ADDR[1] ^ ADDR[2];
-    assign FX1_FPGA1_2_P = nonce[0];
 
 endmodule
