@@ -111,3 +111,20 @@ The next phase is to reproduce the F2 host protocol around the validated OdoCryp
 3. Generated HDL produces hashes/nonces matching the software OdoCrypt implementation for the same seed.
 4. F2 transport wrapper accepts real work and returns valid nonces.
 5. Only after those checks: optimize throughput and produce future 10-day images.
+
+
+## Build a full year
+
+A 365-day window needs 37 consecutive 10-day epoch images to provide continuous coverage (370 days total). After a single epoch build is proven functional, generate the full set with:
+
+```powershell
+.\scripts\build_year.ps1 -Count 37 -Throughput 4
+```
+
+By default the script starts at the current aligned OdoCrypt epoch. You can also pin a historical or future starting seed:
+
+```powershell
+.\scripts\build_year.ps1 -StartSeed 1789344000 -Count 37 -Throughput 4
+```
+
+It writes a CSV manifest under `build/` listing every seed, UTC validity window, and output bitstream path. Do not spend days generating all 37 until one known epoch has been validated on an actual F2.
