@@ -3,12 +3,12 @@
 module f2_smoke_top(
     input  wire       osc_clk,
     input  wire       RI,
-    output wire       RO,
+    inout  wire       RO,
     input  wire       CI,
-    output wire       CO,
+    inout  wire       CO,
     input  wire       BI,
-    output wire       BO,
-    output wire       FX1_FPGA1_2_P,
+    inout  wire       BO,
+    inout  wire       FX1_FPGA1_2_P,
     output wire [1:0] Xil_LED,
     input  wire [2:0] ADDR
 );
@@ -18,15 +18,16 @@ module f2_smoke_top(
     always @(posedge osc_clk)
         heartbeat <= heartbeat + 1'b1;
 
-    // Non-destructive digital loopbacks for first board bring-up.
-    assign RO = RI;
-    assign CO = CI;
-    assign BO = BI;
+    // The public XDC identifies these pins but does not document their
+    // electrical role. Leave them undriven until the F2 schematic/host
+    // protocol has been positively mapped.
+    assign RO = 1'bz;
+    assign CO = 1'bz;
+    assign BO = 1'bz;
+    assign FX1_FPGA1_2_P = 1'bz;
 
-    // Slow activity indicators. ADDR is folded in so the strap pins are
-    // retained by synthesis without assigning them any control function.
+    // LEDs are the only intentionally driven board outputs in the smoke top.
     assign Xil_LED[0] = heartbeat[24] ^ ADDR[0];
     assign Xil_LED[1] = heartbeat[25] ^ ADDR[1] ^ ADDR[2];
-    assign FX1_FPGA1_2_P = heartbeat[23];
 
 endmodule
